@@ -89,8 +89,11 @@
   /* ---------- PLAYER ---------- */
   const modal = document.getElementById('player');
   const video = document.getElementById('pvVideo');
+  const frame = document.getElementById('pvFrame');
   const fill  = document.getElementById('pvFill');
   let timer = null, current = null, claimed = false, elapsed = 0;
+
+  const isCreative = url => /\.html(\?|$)/i.test(url || '');
 
   function openPlayer(ad) {
     current = ad; claimed = false; elapsed = 0;
@@ -100,9 +103,16 @@
     document.getElementById('pvReward').textContent = ad.star_reward;
     document.getElementById('pvCount').textContent = ad.duration;
     fill.style.width = '0%';
-    video.src = ad.video_url; video.currentTime = 0;
+    if (isCreative(ad.video_url)) {
+      video.pause(); video.removeAttribute('src'); video.style.display = 'none';
+      frame.style.display = 'block'; frame.src = ad.video_url;
+    } else {
+      frame.style.display = 'none'; frame.removeAttribute('src');
+      video.style.display = 'block';
+      video.src = ad.video_url; video.currentTime = 0;
+      video.play().catch(()=>{});
+    }
     modal.classList.add('open');
-    video.play().catch(()=>{});
     clearInterval(timer);
     timer = setInterval(tick, 250);
   }
@@ -124,7 +134,9 @@
     } catch (e) { AM.toast(e.message, 'err'); }
   }
   function closePlayer() {
-    clearInterval(timer); video.pause(); video.src=''; modal.classList.remove('open');
+    clearInterval(timer); video.pause(); video.removeAttribute('src');
+    frame.removeAttribute('src'); frame.style.display = 'none'; video.style.display = 'block';
+    modal.classList.remove('open');
   }
   document.getElementById('pvClose').addEventListener('click', closePlayer);
   modal.addEventListener('click', e => { if (e.target === modal) closePlayer(); });

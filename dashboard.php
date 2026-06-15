@@ -25,6 +25,7 @@ include __DIR__ . '/partials/header.php';
       <button class="x" id="pvClose">✕</button>
     </div>
     <video class="player-video" id="pvVideo" playsinline></video>
+    <iframe class="player-video" id="pvFrame" style="display:none" sandbox="allow-scripts allow-same-origin" allow="autoplay"></iframe>
     <div class="player-bar"><div class="fill" id="pvFill"></div></div>
     <div class="player-foot">
       <div class="info">Tonton hingga <b id="pvDur">0</b> detik untuk klaim
