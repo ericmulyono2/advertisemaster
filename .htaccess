@@ -1,0 +1,21 @@
+# AdvertiseMaster — Apache config (Hostinger uses Apache/LiteSpeed)
+Options -Indexes
+DirectoryIndex index.php index.html
+
+# Protect sensitive files
+<FilesMatch "\.(sql|md|example\.php)$">
+  Require all denied
+</FilesMatch>
+
+# Prevent executing PHP inside uploads
+<Directory "assets/uploads">
+  php_flag engine off
+</Directory>
+
+# Basic caching for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+</IfModule>

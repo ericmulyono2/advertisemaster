@@ -1,0 +1,62 @@
+<?php
+require_once __DIR__ . '/../includes/functions.php';
+$BASE      = $BASE      ?? '';
+$PAGE_TITLE= $PAGE_TITLE?? APP_NAME;
+$ACTIVE    = $ACTIVE    ?? '';
+$HIDE_NAV  = $HIDE_NAV  ?? false;
+$cu        = current_user();
+function nav_avatar($u, $base) {
+    if (!empty($u['avatar'])) return '<img class="avatar" src="' . e($base . $u['avatar']) . '" alt="">';
+    $initial = strtoupper(mb_substr($u['name'] ?? 'U', 0, 1));
+    return '<span class="avatar">' . e($initial) . '</span>';
+}
+?>
+<!doctype html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title><?= e($PAGE_TITLE) ?> — <?= e(APP_NAME) ?></title>
+<meta name="csrf" content="<?= e(csrf_token()) ?>">
+<meta name="base" content="<?= e($BASE) ?>">
+<link rel="icon" href="<?= e($BASE) ?>assets/img/logo.svg">
+<link rel="stylesheet" href="<?= e($BASE) ?>assets/css/style.css">
+<script>(function(){var t=localStorage.getItem('am-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+</head>
+<body>
+<div class="bg-fx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="bg-grid"></div>
+
+<?php if (!$HIDE_NAV && $cu): ?>
+<?php $isAdmin = ($cu['role'] === 'admin'); ?>
+<nav class="nav"><div class="container nav-in">
+  <a class="brand" href="<?= e($BASE) ?><?= $isAdmin ? 'admin/index.php' : 'dashboard.php' ?>">
+    <?php readfile(__DIR__ . '/../assets/img/logo.svg'); ?>
+  </a>
+  <div class="nav-links">
+    <?php if ($isAdmin): ?>
+      <a href="<?= e($BASE) ?>admin/index.php"   class="<?= $ACTIVE==='dashboard'?'active':'' ?>">Dashboard</a>
+      <a href="<?= e($BASE) ?>admin/users.php"   class="<?= $ACTIVE==='users'?'active':'' ?>">Pengguna</a>
+      <a href="<?= e($BASE) ?>admin/ads.php"     class="<?= $ACTIVE==='ads'?'active':'' ?>">Iklan</a>
+      <a href="<?= e($BASE) ?>admin/profile.php" class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
+    <?php else: ?>
+      <a href="<?= e($BASE) ?>dashboard.php" class="<?= $ACTIVE==='home'?'active':'' ?>">Beranda</a>
+      <a href="<?= e($BASE) ?>stats.php"     class="<?= $ACTIVE==='stats'?'active':'' ?>">Statistik</a>
+      <a href="<?= e($BASE) ?>profile.php"   class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
+    <?php endif; ?>
+  </div>
+  <div class="nav-right">
+    <?php if (!$isAdmin): ?>
+    <span class="star-chip"><?= AM_star() ?><span id="navStars"><?= (int)$cu['stars'] ?></span></span>
+    <?php endif; ?>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema">
+      <span class="ic moon">🌙</span><span class="ic sun">☀️</span><span class="knob"></span>
+    </button>
+    <a href="<?= e($BASE) ?>profile.php" title="<?= e($cu['name']) ?>"><?= nav_avatar($cu,$BASE) ?></a>
+  </div>
+</div></nav>
+<?php endif; ?>
+<?php
+function AM_star(){return '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>';}
+?>

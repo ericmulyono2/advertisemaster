@@ -1,0 +1,12 @@
+# uploaded avatars (keep folder, ignore contents)
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/index.html
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# local credential override (optional — see config.example.php)
+config/config.local.php
