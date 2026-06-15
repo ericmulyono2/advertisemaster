@@ -10,3 +10,7 @@ Thumbs.db
 
 # local credential override (optional — see config.example.php)
 config/config.local.php
+
+# downloaded ad videos (hosted on server, not in git)
+assets/videos/*
+!assets/videos/.gitkeep

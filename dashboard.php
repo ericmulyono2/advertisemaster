@@ -9,10 +9,10 @@ include __DIR__ . '/partials/header.php';
 <div class="container">
   <div class="grid-head">
     <div>
-      <h2>Galeri <span class="gradient-text">Iklan</span></h2>
-      <div class="sub">Tonton sampai selesai untuk dapat STAR ⭐ · tekan ❤ untuk favorit & ganti iklan</div>
+      <h2><span class="gradient-text" data-i18n="grid_title">Galeri Iklan</span></h2>
+      <div class="sub" data-i18n="grid_sub">Tonton sampai selesai untuk dapat STAR ⭐ · tekan ❤ untuk favorit & ganti iklan</div>
     </div>
-    <button class="btn ghost sm" id="reloadGrid">↻ Acak Ulang</button>
+    <button class="btn ghost sm" id="reloadGrid">↻ <span data-i18n="reshuffle">Acak Ulang</span></button>
   </div>
   <div id="grid" class="ads-grid"><div class="spinner"></div></div>
 </div>

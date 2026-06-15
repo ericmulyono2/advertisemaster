@@ -229,8 +229,49 @@ table.tbl tr:hover td{background:var(--surface2)}
 .bars .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted)}
 .bars .bar b{position:absolute;top:-20px;left:0;right:0;text-align:center;font-size:11px;color:var(--text)}
 
+/* ===== language switcher ===== */
+.lang-switch{position:relative}
+.lang-btn{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:7px 11px;color:var(--text);font-weight:700;font-size:13px}
+.lang-btn:hover{background:var(--surface2)}
+.lang-btn svg{width:16px;height:16px;opacity:.8}
+.lang-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:190px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:80;
+  opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s}
+.lang-menu.open{opacity:1;visibility:visible;transform:none}
+.lang-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:14px}
+.lang-opt:hover{background:var(--surface2)}
+.lang-opt.active{background:var(--bg2);font-weight:700}
+.lang-opt .fl{font-size:11px;font-weight:800;color:var(--muted);min-width:22px}
+
+.auth-topbar{position:fixed;top:18px;right:20px;display:flex;gap:10px;align-items:center;z-index:30}
+
+/* ===== landing page ===== */
+.landing-nav{display:flex;align-items:center;gap:16px;height:70px}
+.landing-nav .brand svg{height:34px}
+.landing-nav .right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.landing{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px 20px 80px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--primary) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 35%,transparent);color:var(--primary);
+  padding:9px 18px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:34px}
+.hero-title{font-size:clamp(40px,7vw,82px);font-weight:900;line-height:1.02;letter-spacing:-2px;margin:0 0 26px;max-width:14ch}
+.hero-sub{font-size:clamp(16px,2vw,21px);color:var(--muted);max-width:620px;line-height:1.55;margin:0 0 40px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn.lg{padding:16px 28px;font-size:16px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:90px;max-width:920px;width:100%}
+.feature{text-align:center}
+.feature .fico{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;color:#fff}
+.feature .fico svg{width:28px;height:28px}
+.feature.c1 .fico{background:linear-gradient(135deg,#6a5cff,#a855f7)}
+.feature.c2 .fico{background:linear-gradient(135deg,#ec4899,#f43f5e)}
+.feature.c3 .fico{background:linear-gradient(135deg,#22d3ee,#3b82f6)}
+.feature h3{margin:0 0 8px;font-size:19px}
+.feature p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
 @media(max-width:760px){
   .nav-links{display:none}
   .ads-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px}
   .container{padding:0 14px}
+  .features{grid-template-columns:1fr;gap:34px;margin-top:60px}
 }

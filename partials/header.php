@@ -36,24 +36,26 @@ function nav_avatar($u, $base) {
   </a>
   <div class="nav-links">
     <?php if ($isAdmin): ?>
-      <a href="<?= e($BASE) ?>admin/index.php"   class="<?= $ACTIVE==='dashboard'?'active':'' ?>">Dashboard</a>
-      <a href="<?= e($BASE) ?>admin/users.php"   class="<?= $ACTIVE==='users'?'active':'' ?>">Pengguna</a>
-      <a href="<?= e($BASE) ?>admin/ads.php"     class="<?= $ACTIVE==='ads'?'active':'' ?>">Iklan</a>
-      <a href="<?= e($BASE) ?>admin/profile.php" class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
+      <a href="<?= e($BASE) ?>admin/index.php"   data-i18n="nav_dashboard" class="<?= $ACTIVE==='dashboard'?'active':'' ?>">Dashboard</a>
+      <a href="<?= e($BASE) ?>admin/users.php"   data-i18n="nav_users" class="<?= $ACTIVE==='users'?'active':'' ?>">Pengguna</a>
+      <a href="<?= e($BASE) ?>admin/ads.php"     data-i18n="nav_ads" class="<?= $ACTIVE==='ads'?'active':'' ?>">Iklan</a>
+      <a href="<?= e($BASE) ?>admin/profile.php" data-i18n="nav_profile" class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
     <?php else: ?>
-      <a href="<?= e($BASE) ?>dashboard.php" class="<?= $ACTIVE==='home'?'active':'' ?>">Beranda</a>
-      <a href="<?= e($BASE) ?>stats.php"     class="<?= $ACTIVE==='stats'?'active':'' ?>">Statistik</a>
-      <a href="<?= e($BASE) ?>profile.php"   class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
+      <a href="<?= e($BASE) ?>dashboard.php" data-i18n="nav_home" class="<?= $ACTIVE==='home'?'active':'' ?>">Beranda</a>
+      <a href="<?= e($BASE) ?>stats.php"     data-i18n="nav_stats" class="<?= $ACTIVE==='stats'?'active':'' ?>">Statistik</a>
+      <a href="<?= e($BASE) ?>profile.php"   data-i18n="nav_profile" class="<?= $ACTIVE==='profile'?'active':'' ?>">Profil</a>
     <?php endif; ?>
   </div>
   <div class="nav-right">
     <?php if (!$isAdmin): ?>
     <span class="star-chip"><?= AM_star() ?><span id="navStars"><?= (int)$cu['stars'] ?></span></span>
     <?php endif; ?>
+    <?php include __DIR__ . '/lang_switch.php'; ?>
     <button class="theme-toggle" data-theme-toggle title="Ganti tema">
       <span class="ic moon">🌙</span><span class="ic sun">☀️</span><span class="knob"></span>
     </button>
     <a href="<?= e($BASE) ?>profile.php" title="<?= e($cu['name']) ?>"><?= nav_avatar($cu,$BASE) ?></a>
+    <a href="<?= e($BASE) ?>api/logout.php" class="btn ghost sm" title="Logout" style="padding:8px 11px">⏻</a>
   </div>
 </div></nav>
 <?php endif; ?>
