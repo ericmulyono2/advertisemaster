@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/functions.php';
 $u = current_user();
 if ($u) {
-    header('Location: ' . ($u['role'] === 'admin' ? 'admin/index.php' : 'dashboard.php'));
+    header('Location: ' . (is_panel_role($u['role']) ? 'admin/index.php' : 'dashboard.php'));
     exit;
 }
 $BASE = ''; $PAGE_TITLE = 'AdvertiseMaster'; $HIDE_NAV = true;

@@ -29,7 +29,7 @@ function nav_avatar($u, $base) {
 <div class="bg-grid"></div>
 
 <?php if (!$HIDE_NAV && $cu): ?>
-<?php $isAdmin = ($cu['role'] === 'admin'); ?>
+<?php $isAdmin = is_panel_role($cu['role']); ?>
 <nav class="nav"><div class="container nav-in">
   <a class="brand" href="<?= e($BASE) ?><?= $isAdmin ? 'admin/index.php' : 'dashboard.php' ?>">
     <?php readfile(__DIR__ . '/../assets/img/logo.svg'); ?>

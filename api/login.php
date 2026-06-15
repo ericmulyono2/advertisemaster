@@ -20,5 +20,5 @@ $_SESSION['uid'] = (int)$u['id'];
 session_regenerate_id(true);
 $_SESSION['uid'] = (int)$u['id'];
 
-$redirect = $u['role'] === 'admin' ? 'admin/index.php' : 'dashboard.php';
+$redirect = is_panel_role($u['role']) ? 'admin/index.php' : 'dashboard.php';
 json_ok(['redirect' => $redirect, 'role' => $u['role']], 'Login berhasil.');

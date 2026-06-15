@@ -53,10 +53,10 @@ async function AdminUsers() {
           <td>#${String(u.id).padStart(5,'0')}</td>
           <td><b>${escapeHtml(u.name)}</b></td>
           <td class="muted">${escapeHtml(u.email)}</td>
-          <td><span class="badge ${u.role==='admin'?'on':'watch'}">${u.role}</span></td>
+          <td><span class="badge ${u.role==='user'?'watch':(u.role==='staff'?'staff':'on')}">${u.role}</span></td>
           <td style="color:var(--warn);font-weight:800">${u.stars}</td>
           <td class="muted">${fmtDate(u.created_at)}</td>
-          <td style="text-align:right">${u.role==='admin'?'':`<button class="btn sm" data-view="${u.id}">Detail</button>`}</td>
+          <td style="text-align:right">${u.role==='user'?`<button class="btn sm" data-view="${u.id}">Detail</button>`:''}</td>
         </tr>`).join('')}</tbody></table>`;
     } catch (e) { wrap.innerHTML = `<div class="empty">${e.message}</div>`; }
   }
@@ -108,6 +108,24 @@ async function AdminUsers() {
     try {
       await AM.api('api/admin/set_user_password.php', { user_id: currentUid, new_password: np });
       e.target.reset(); AM.toast('Password user diganti.', 'ok');
+    } catch (err) { AM.toast(err.message, 'err'); }
+  });
+
+  // ---- create user/staff ----
+  const createModal = document.getElementById('createModal');
+  const createForm = document.getElementById('createForm');
+  document.getElementById('btnCreateUser').addEventListener('click', () => createModal.classList.add('open'));
+  document.getElementById('cuClose').addEventListener('click', () => createModal.classList.remove('open'));
+  createModal.addEventListener('click', e => { if (e.target === createModal) createModal.classList.remove('open'); });
+  createForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    try {
+      const r = await AM.api('api/admin/create_user.php', {
+        name: createForm.name.value, email: createForm.email.value,
+        password: createForm.password.value, role: createForm.role.value
+      });
+      createModal.classList.remove('open'); createForm.reset();
+      AM.toast(r.message, 'ok'); load();
     } catch (err) { AM.toast(err.message, 'err'); }
   });
 

@@ -198,6 +198,7 @@ table.tbl tr:hover td{background:var(--surface2)}
 .badge.love{background:color-mix(in srgb,var(--love) 18%,transparent);color:var(--love)}
 .badge.on{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
 .badge.off{background:color-mix(in srgb,var(--muted) 18%,transparent);color:var(--muted)}
+.badge.staff{background:color-mix(in srgb,var(--purple) 20%,transparent);color:var(--purple)}
 
 /* switch */
 .switch{position:relative;width:50px;height:28px;display:inline-block}

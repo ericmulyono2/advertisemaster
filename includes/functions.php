@@ -62,11 +62,21 @@ function require_login(): array {
     if (!$u) json_err('Silakan login terlebih dahulu.', 401);
     return $u;
 }
+/** Panel access: admin OR staff (staff = pekerja di bawah admin, dashboard sama). */
 function require_admin(): array {
     $u = require_login();
-    if (($u['role'] ?? '') !== 'admin') json_err('Akses admin diperlukan.', 403);
+    if (!in_array($u['role'] ?? '', ['admin', 'staff'], true)) {
+        json_err('Akses admin/staff diperlukan.', 403);
+    }
     return $u;
 }
+/** Strict admin-only (mis. membuat akun staff). */
+function require_super_admin(): array {
+    $u = require_login();
+    if (($u['role'] ?? '') !== 'admin') json_err('Hanya admin yang dapat melakukan ini.', 403);
+    return $u;
+}
+function is_panel_role(?string $r): bool { return in_array($r, ['admin', 'staff'], true); }
 
 /* ---------- OTP ---------- */
 function gen_otp(): string {

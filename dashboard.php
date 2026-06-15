@@ -2,7 +2,7 @@
 require_once __DIR__ . '/includes/functions.php';
 $u = current_user();
 if (!$u) { header('Location: login.php'); exit; }
-if ($u['role'] === 'admin') { header('Location: admin/index.php'); exit; }
+if (is_panel_role($u['role'])) { header('Location: admin/index.php'); exit; }
 $BASE = ''; $PAGE_TITLE = 'Beranda'; $ACTIVE = 'home';
 include __DIR__ . '/partials/header.php';
 ?>

@@ -2,14 +2,17 @@
 require_once __DIR__ . '/../includes/functions.php';
 $u = current_user();
 if (!$u) { header('Location: ../login.php'); exit; }
-if ($u['role'] !== 'admin') { header('Location: ../dashboard.php'); exit; }
+if (!is_panel_role($u['role'])) { header('Location: ../dashboard.php'); exit; }
 $BASE = '../'; $PAGE_TITLE = 'Pengguna'; $ACTIVE = 'users';
 include __DIR__ . '/../partials/header.php';
 ?>
 <div class="container" style="padding-top:28px;padding-bottom:60px">
   <div class="grid-head">
     <h2 style="margin:0">Database <span class="gradient-text">Pengguna</span></h2>
-    <input class="input" id="userSearch" placeholder="Cari nama / email…" style="max-width:280px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input class="input" id="userSearch" placeholder="Cari nama / email…" style="max-width:240px">
+      <button class="btn sm" id="btnCreateUser">+ Buat Akun</button>
+    </div>
   </div>
   <div class="panel"><div id="usersWrap"><div class="spinner"></div></div></div>
 </div>
@@ -34,6 +37,26 @@ include __DIR__ . '/../partials/header.php';
       </div>
       <h4 class="section-title">Riwayat Tayangan</h4>
       <div id="umHistory" style="max-height:340px;overflow:auto"></div>
+    </div>
+  </div>
+</div>
+<!-- create user modal -->
+<div class="modal modal-sm" id="createModal">
+  <div class="modal-card">
+    <div class="player-top"><b>Buat Akun Baru</b><button class="x" id="cuClose">✕</button></div>
+    <div class="pad" style="padding:24px">
+      <form id="createForm">
+        <div class="field"><label>Nama</label><input class="input" name="name" required></div>
+        <div class="field"><label>Email</label><input class="input" type="email" name="email" required></div>
+        <div class="field"><label>Password</label><input class="input" type="text" name="password" placeholder="Min. 6 karakter" required></div>
+        <div class="field"><label>Role</label>
+          <select class="input" name="role">
+            <option value="user">User (penonton)</option>
+            <?php if ($u['role'] === 'admin'): ?><option value="staff">Staff (pekerja)</option><?php endif; ?>
+          </select>
+        </div>
+        <button class="btn block" type="submit">Buat Akun</button>
+      </form>
     </div>
   </div>
 </div>
