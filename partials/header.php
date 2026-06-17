@@ -12,7 +12,7 @@ function nav_avatar($u, $base) {
 }
 ?>
 <!doctype html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,8 +20,11 @@ function nav_avatar($u, $base) {
 <meta name="csrf" content="<?= e(csrf_token()) ?>">
 <meta name="base" content="<?= e($BASE) ?>">
 <link rel="icon" href="<?= e($BASE) ?>assets/img/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="<?= e($BASE) ?>assets/css/style.css">
-<script>(function(){var t=localStorage.getItem('am-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>(function(){var t=localStorage.getItem('am-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 </head>
 <body>

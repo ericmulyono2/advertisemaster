@@ -5,7 +5,7 @@ const AM = {
 
   /* ---- theme ---- */
   initTheme() {
-    const saved = localStorage.getItem('am-theme') || 'dark';
+    const saved = localStorage.getItem('am-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
   },
   toggleTheme() {
