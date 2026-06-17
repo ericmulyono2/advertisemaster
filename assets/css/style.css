@@ -167,6 +167,10 @@ select.input{appearance:none}
 .player-top .x{width:36px;height:36px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted)}
 .player-video{width:100%;aspect-ratio:16/9;background:#000;display:block}
+#pvYt iframe{width:100%;height:100%;display:block;border:0}
+.ad-thumb.ytthumb .num{font-size:20px;position:absolute;top:8px;left:10px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:7px;z-index:2}
+.ad-thumb.ytthumb .play,.ad-thumb.ytthumb .dur{z-index:2}
+.ad-thumb.ytthumb::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35))}
 .player-bar{height:6px;background:var(--bg2);position:relative}
 .player-bar .fill{height:100%;width:0;background:var(--accent);transition:width .25s linear}
 .player-foot{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}

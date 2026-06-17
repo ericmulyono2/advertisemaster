@@ -6,10 +6,18 @@
   const heartSVG = `<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-8.9C-0.2 7.7 2.6 4 6.3 4c2 0 3.7 1.2 4.7 2.6C12 5.2 13.7 4 15.7 4 19.4 4 22.2 7.7 22 12.1 19.5 16.4 12 21 12 21z"/></svg>`;
   const playSVG = `<svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M8 5v14l11-7z"/></svg>`;
 
+  const isYouTube = url => /^yt:/.test(url || '');
+  const ytId      = url => (url || '').replace(/^yt:/, '');
+  const isCreative = url => /\.html(\?|$)/i.test(url || '');
+
   function cardHTML(a) {
     const off = a.is_active ? '' : 'off';
+    const yt = isYouTube(a.video_url);
+    const thumbStyle = yt
+      ? ` style="background-image:url(https://img.youtube.com/vi/${ytId(a.video_url)}/hqdefault.jpg);background-size:cover;background-position:center"`
+      : '';
     return `<div class="ad-card ${off}" data-id="${a.id}" data-active="${a.is_active}">
-      <div class="ad-thumb" data-play>
+      <div class="ad-thumb${yt ? ' ytthumb' : ''}" data-play${thumbStyle}>
         <span class="num">#${String(a.ad_number).padStart(2,'0')}</span>
         ${a.is_active ? `<div class="play">${playSVG}</div>` : ''}
         ${a.is_active ? '' : `<div class="lock">🔒 Segera</div>`}
@@ -90,34 +98,62 @@
   const modal = document.getElementById('player');
   const video = document.getElementById('pvVideo');
   const frame = document.getElementById('pvFrame');
+  const ytBox = document.getElementById('pvYt');
   const fill  = document.getElementById('pvFill');
-  let timer = null, current = null, claimed = false, elapsed = 0;
+  let timer = null, current = null, claimed = false, elapsed = 0, playing = false, ytPlayer = null;
 
-  const isCreative = url => /\.html(\?|$)/i.test(url || '');
+  // YouTube IFrame API readiness
+  let ytApiReady = !!(window.YT && window.YT.Player);
+  const ytWaiters = [];
+  window.onYouTubeIframeAPIReady = () => { ytApiReady = true; ytWaiters.splice(0).forEach(f => f()); };
+  function whenYT(cb) { if (window.YT && window.YT.Player) cb(); else ytWaiters.push(cb); }
+
+  function destroyYt() {
+    if (ytPlayer) { try { ytPlayer.destroy(); } catch (e) {} ytPlayer = null; }
+    ytBox.innerHTML = '';
+  }
 
   function openPlayer(ad) {
-    current = ad; claimed = false; elapsed = 0;
+    current = ad; claimed = false; elapsed = 0; playing = false;
     document.getElementById('pvTitle').textContent = ad.title;
     document.getElementById('pvNum').textContent = '#' + String(ad.ad_number).padStart(2,'0');
     document.getElementById('pvDur').textContent = ad.duration;
     document.getElementById('pvReward').textContent = ad.star_reward;
     document.getElementById('pvCount').textContent = ad.duration;
     fill.style.width = '0%';
-    if (isCreative(ad.video_url)) {
-      video.pause(); video.removeAttribute('src'); video.style.display = 'none';
-      frame.style.display = 'block'; frame.src = ad.video_url;
+
+    video.style.display = 'none'; frame.style.display = 'none'; ytBox.style.display = 'none';
+    video.pause(); video.removeAttribute('src'); frame.removeAttribute('src'); destroyYt();
+
+    if (isYouTube(ad.video_url)) {
+      ytBox.style.display = 'block';
+      const mount = document.createElement('div');
+      ytBox.appendChild(mount);
+      whenYT(() => {
+        ytPlayer = new YT.Player(mount, {
+          width: '100%', height: '100%', videoId: ytId(ad.video_url),
+          playerVars: { autoplay: 1, rel: 0, modestbranding: 1, playsinline: 1 },
+          events: {
+            onStateChange: e => {
+              if (e.data === 1) playing = true;                 // PLAYING
+              else if (e.data === 2) playing = false;            // PAUSED
+              else if (e.data === 0) { playing = false; if (!claimed) { claimed = true; claim(); } } // ENDED
+            }
+          }
+        });
+      });
+    } else if (isCreative(ad.video_url)) {
+      frame.style.display = 'block'; frame.src = ad.video_url; playing = true;
     } else {
-      frame.style.display = 'none'; frame.removeAttribute('src');
-      video.style.display = 'block';
-      video.src = ad.video_url; video.currentTime = 0;
-      video.play().catch(()=>{});
+      video.style.display = 'block'; video.src = ad.video_url; video.currentTime = 0;
+      playing = true; video.play().catch(()=>{});
     }
     modal.classList.add('open');
     clearInterval(timer);
     timer = setInterval(tick, 250);
   }
   function tick() {
-    elapsed += 0.25;
+    if (playing) elapsed += 0.25;
     const need = current.duration;
     const pct = Math.min(100, elapsed / need * 100);
     fill.style.width = pct + '%';
@@ -134,8 +170,10 @@
     } catch (e) { AM.toast(e.message, 'err'); }
   }
   function closePlayer() {
-    clearInterval(timer); video.pause(); video.removeAttribute('src');
-    frame.removeAttribute('src'); frame.style.display = 'none'; video.style.display = 'block';
+    clearInterval(timer); playing = false;
+    video.pause(); video.removeAttribute('src');
+    frame.removeAttribute('src'); destroyYt();
+    frame.style.display = 'none'; ytBox.style.display = 'none'; video.style.display = 'block';
     modal.classList.remove('open');
   }
   document.getElementById('pvClose').addEventListener('click', closePlayer);

@@ -26,6 +26,7 @@ include __DIR__ . '/partials/header.php';
     </div>
     <video class="player-video" id="pvVideo" playsinline></video>
     <iframe class="player-video" id="pvFrame" style="display:none" sandbox="allow-scripts allow-same-origin" allow="autoplay"></iframe>
+    <div class="player-video" id="pvYt" style="display:none"></div>
     <div class="player-bar"><div class="fill" id="pvFill"></div></div>
     <div class="player-foot">
       <div class="info">Tonton hingga <b id="pvDur">0</b> detik untuk klaim
@@ -36,4 +37,5 @@ include __DIR__ . '/partials/header.php';
 </div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script src="assets/js/grid.js" defer></script>
